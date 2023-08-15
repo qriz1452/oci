@@ -170,4 +170,228 @@ Docker containers can be launched in many copies that may run in parallel. So th
 
 
 
+Let's talk about various Docker components. The image on the screen represents various components of Docker architecture that work together to achieve containerization goals. Talking about Docker client, a developer or a DevOps professional communicates with Docker engine through the Docker client, which may be run on the same computer as Docker engine in case of development environments or through a remote shell.
+
+So whenever a developer fires a Docker command, the client sends them to the Docker Daemon which carries them out. The communication between the Docker client and the Docker host is usually taken place through REST APIs. The Docker clients can communicate with more than one Daemon at a time. Docker Daemon is a persistent background process that manages Docker images, containers, networks, and storage volumes. The Docker Daemon constantly listens to the Docker API request from the Docker clients and processes them.
+
+Docker registries are services that provide locations from where you can store and download Docker images. In other words, a Docker registry contains repositories that host one or more Docker images. Public registries include Docker Hub and Docker Cloud and private registries can also be used. Oracle Cloud Infrastructure offers you services like OCIR, which is also called a container registry, where you can host your own private or public registry.
+
+Let's understand how virtual machines are different from containers. As you see from the diagram, a hypervisor or a virtual machine monitor is a software, firmware, or hardware that creates and run virtual machines. It is placed between the hardware and the virtual machines, and it is necessary to virtualize the server.
+
+Within each virtual machine runs a unique guest operating system. VMs with different operating systems can run on the same physical server. A Linux VM can sit alongside a Windows VM and so on. Each VM has its own binaries, libraries, and application that IT services. And the VM may be many gigabytes in size.
+
+This technique provides a variety of benefits like the ability to consolidate applications into a single system, cost savings through reduced footprints and faster server provisioning. But this approach has its own drawbacks. Each VM includes a separate operating system image, which adds overhead in memory and storage footprint. As it turns out, this issue adds complexity to all the stages of software development lifecycle from development and test to production and disaster recovery as well.
+
+It also severely limits the portability of applications between different cloud providers and traditional data centers. And this is where containers come to the rescue. Containers sit on top of a physical server and its host operating system-- typically, Linux or Windows. Each container shares the host OS kernel and usually the binaries and libraries as well. But the shared components are read only.
+
+Sharing OS resources such as libraries significantly reduces the need to reproduce the operating system code. A server can run multiple workloads with a single operating system installation. Containers are thus exceptionally lightweight. They are only megabytes in size and take just seconds to start.
+
+What this means in practice is you can put two or three times as many applications on a single server with containers than you can put on a virtual machine. Compared to containers, virtual machines take minutes to run and are order of magnitude larger than an equivalent container measured in gigabytes versus megabytes. You should use a virtual machine when you want to run applications that specifically require a new OS, also when isolation and security are your priority over everything else. In most scenarios, a container will provide a lighter, faster, and more cost-effective solution than the virtual machines.
+
+Let's discuss a few Docker commands that you will be using while you work with Docker. So in order to create and run a container, the command is Docker run. And you can specify the image name that you want to run within the container.
+
+There are other parameters that you can parse like -p for ports, -d to run it and detach mode, and likewise. Starting a stopped container. You can use the Docker start command followed by a container name or a container ID to start that stopped container. To stop a running container, you can use the Docker stop command and provide container name or ID as an argument.
+
+To restart a running container, you should use Docker restart command followed by container name or its ID as an argument. To get the details of a running container, you can use the Docker inspect command and parse the container name and ID as argument. You can also see the container logs using Docker logs command.
+
+To list all the running containers within your environment, you can use the Docker ps command. And if you want to see all the running as well as stopped containers, you can do a Docker ps minus A. To remove a container, you can use Docker RM command, and you can parse the container name or ID as an argument.
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/4ac8d4df-01cf-4638-9584-1a8c378648a6)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/7f06b234-9d48-4db4-a359-ab2132984f4e)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/01403c80-8c98-45f3-8bbf-7fd6fb919537)
+
+
+
+-----------------------------
+
+Working with docker images 
+
+Let's understand what a Docker file is. A Docker file is a text file that defines a Docker image. You'll use a Docker file to create your own custom Docker image-- in other words, to define your custom environment to be used in a Docker container.
+
+You'll want to create your own Docker file when existing images won't meet your project needs to a different runtime requirements, which means that learning about Docker files is an essential part of working with Docker. Docker file is a step-by-step definition of building up a Docker image. It provides a set of standard instructions to be used in Docker file that Docker will execute when you issue a Docker build command.
+
+Let's understand each of the commands used here. Every Docker file must start with From instruction. The idea behind this is that you need a starting point to build your image. It can be from scratch or from an existing image available in the Docker registry.
+
+The run command is used to execute a command and will wait till the command finishes its execution. Since most of the images are Linux-based, a good practice is to set up a directory you will work in. That's the purpose of work directory line. It defines a directory and moves you in.
+
+The copy instruction helps you to copy your source code into the image. ENV provides default values for variables that can be accessed within the containers. If your app needs to be reached from outside the container, you must open its listening port using the exposed command.
+
+Once your application is ready to run, the last thing to do is to specify how to execute it. You must add the CMD line with the same command with all the arguments you used locally to launch your application. This command can also be used to execute commands at runtime for the containers, but we can be more flexible using the entry point command.
+
+Labels are used in Docker file to help organize your Docker images. Labels are key value pairs and simply adds custom metadata to your Docker images. As you can see from the example, we have specified the key value pair as maintainer, which specifies who is the one maintaining this Docker file.
+
+Let's take a look at various Docker commands that will be handy when we work with Docker container images. In order to pull an image from the Docker Hub, you can use the Docker image pull command by specifying the image name as the argument. To build an image using Docker file, you need to use the Docker build command, and then you need to specify the Docker file path where the Docker file is stored.
+
+To build an image from a running container, you can use the Docker commit command and providing the arguments like the container name or the ID and then the image name that you wish to store it as. Tagging a Docker image-- you can use the Docker tag command to tag your source image into the target image format.
+
+Pushing an image to Docker Hub-- in order to push your image from local repository to your Docker Hub repository, you need to first log in into your Docker Hub. And, then, you can use the Docker image push command followed by the image name that you wish to push to the Docker registry.
+
+List container images-- at any point in time to check the number of images that you have in a local repository, you can use the Docker image list or the Docker images command. Building an image from your system-- in order to remove an image from your system, you can use Docker image remove or Docker RMI command by supplying the image name as argument to these commands.
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/7ddaa055-4301-4c99-a468-e20ccbf2935a)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/7981d840-d7b3-4ce3-884b-b5a5fbd50691)
+
+
+
+---------------------------
+
+
+ Introduction to OCIR
+
+
+Let me introduce you to Oracle Cloud Infrastructure Registry. Let's first understand what is it. Oracle Cloud Infrastructure Registry, also known as container registry, is an Oracle-managed registry that enables you to simplify your development to production workflow. Container registry makes it easy for you as a developer to store, share, and manage container images. And the highly available and scalable architecture of Oracle Cloud Infrastructure ensures you can reliably deploy your applications.
+
+So you don't have to worry about operational issues or scaling the underlying infrastructure. You can use container registry as a private Docker registry for internal use pushing and pulling Docker images to and from the container registry using the Docker V2 API and the standard Docker command line interface. You can also use container registry as a public Docker registry, enabling any user with internet access and knowledge of appropriate URL to pull images from the public repository in container registry.
+
+Let's take a look at what problem does it solve. Without a registry, it is hard for the development teams to maintain a consistent set of Docker images for their containerized applications. Developers, testers, and CICD systems need to use registry to store images created during the application development process. OCIR makes it possible to iterate on code faster and push it to the production more frequently.
+
+Without a managed registry, it is hard to enforce access rights and security policies for images. OCIR is integrated with identity access management, which provides easy authentication with native Oracle Cloud Infrastructure identity. It is hard to find right images and have them available in the region of deployment.
+
+Container registry is an Open Container Initiative compliant registry. As a result, you can store any artifacts that conform to Open Container Initiative specifications such as Docker images, manifest lists, and Helm charts.
+
+If you are familiar with the function service of OCI, the function service also makes use of OCIR. The function code in OCI is packaged as a Docker image and pushed through the OCIR. And the event triggers can be configured in the event service to make sure when the function is invoked.
+
+Let's take a look at some key benefits of OCIR. Integration-- OCIR provides full integration with container engine for Kubernetes. When it comes to security, registries can be made private or can be made public by an admin.
+
+Regional availability-- you can easily pull container images quickly from the same region as your deployments. High availability-- it leverages OCI for high performance, high availability, and low latency image push and pull to or from the OCIR. Anywhere access-- you can use Docker CLI to push and pull images from anywhere, may it be cloud, on premises, or through your personal laptops.
+
+In each region that is enabled for your tenancy, you can create up to 500 repositories in Oracle Cloud Infrastructure Registry, consuming a maximum of 400 GB in total. And each repository can hold up to 100,000 images at a time.
+
+Before we move further, let's take a look at container registry concepts. What are Docker images? Docker image is basically a read-only template with instructions for creating a Docker container. It holds the application that you want Docker to run as a container along with any dependencies that are required.
+
+Repository-- it's a meaningfully named collection of related images, which are grouped together for convenience in a container registry. There are different versions of the same source image, which are grouped into the same repository. For example, as you can see, we have a repository called mahendra_project/acme-web-app. Now, you can have multiple images stored under this repository. The only thing that you need to keep changing is the image version.
+
+Every image version is given a tag. And the tag uniquely identifies the image. Depending upon your need, a repository can be made private or public. One important thing to note is that user needs to have an OCI username and authentication token before being able to push, pull an image from the OCIR.
+
+When working with repositories and container registry, you will find it helpful to have a clear understanding of following terms and how they relate to each other. The region key-- the region key identifies the container registry region that you are using. For example, as you can see over here, the IAD specifies the US East, Ashburn region, whereas the US-Phoenix-1 specifies the US West, Phoenix region.
+
+Repository name-- repository name is the name of repository in container registry to and from which you can push and pull images. Repository names can include one or more slash characters and are unique across all the compartments in the entire tenancy. You should note that although a repository name can include slash characters, the slash does not represent a hierarchical directory structure. It is simply one character in the string of characters.
+
+As a convenience, you might choose to start the name of several different repositories with the same string-- perhaps ending in a slash such as project01/. Such a string is sometimes called a repository name prefix. But a repository named project01 acme-web-app may not have a relationship with project name project01/mytest-app.
+
+Tenancy namespace-- a tenancy namespace is an autogenerated random and immutable string of alphanumeric characters. For example, the namespace of acme-dev tenancy might be this random string. How to locate your tenancy namespace will be shown during the demo.
+
+Registry identifier-- a registry identifier is the combination of your container registry region key and the tenancy namespace. It has the following structure. As you can see, it starts with the region key and followed by the tenancy namespace. Also make a note, the tenancy namespace can be a random string or it can be a regular name.
+
+A tag or image tag is a string used to refer to a particular image in an known repository. Image name-- the term image name is sometimes used as a shorthand way to refer to a particular image in a particular repository. In this context, an image name has the structure repository name along with tag separated by a colon.
+
+Image path-- an image path is a fully qualified path to a particular image in a registry. It extends the repository path by adding tags associated with the image. It has the following structure. It starts with the region key followed by the tenancy namespace, the repo namespace followed by tag separated by a colon. You can always refer Oracle's documentation to identify the region key for the region you are working in.
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/6b4bc356-6afa-4e5a-9ec0-ff45f6d08eb0)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/e0a73a5b-cee2-46d1-89bc-e299d2d79dbc)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/34b97e99-ee60-48ae-b486-f8770be1313e)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/dc27c97e-908d-4118-ba4e-33bbf313860d)
+
+
+---------------------------
+
+ Introduction to Container Instances
+
+
+ Meet Alex. Alex wants to test his containerized application but without deploying it on the OKE as the scale is not large. At the same time, the application he wants to containerize are running isolated web applications or RESTful APIs. He is also looking for a simple, quick, and secure way to run containers without managing any servers.
+
+One way for Alex to run his containerized applications without using Kubernetes is to provision a virtual machine, install container runtime, and run the application on it. But this process still increases the operational complexity as it would require him to manage virtual machines and servers, patch the operating systems, and update the container runtime regularly.
+
+Containers have become the favored method of packing, deploying, and managing modern applications. Among container solutions, OCI Container Instances offers the quickest and the most straightforward way to launch containers. By eliminating the operational complexities, OCI Container Instances enable users to run, containerize the applications without having to manage any infrastructure.
+
+Users only need to supply the container images for their applications. And OCI takes care of the underlying container runtime and compute resources. The containers are hosted on fully managed compute infrastructure that's specifically designed for container workloads, providing robust workload isolation for enhanced security.
+
+Optimized for container workloads, a container instance is isolated at the hypervisor level and doesn't share the underlying OS kernel or CPU or memory resources with any other container instances. With this second layer of defense, containers of different applications no longer share the same OS kernel, which reduces the attack surface.
+
+![image](https://github.com/qriz1452/oci/assets/112246222/971b2361-d0c7-4f3c-aace-033ea3943060)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/ae3834c3-4bc0-4f7e-a9d7-2cf09538d9b3)
+
+
+
+------------------
+
+
+
+ Features and Use Cases of Container Instances
+
+
+ Meet Alex. Alex wants to test his containerized application but without deploying it on the OKE as the scale is not large. At the same time, the application he wants to containerize are running isolated web applications or RESTful APIs. He is also looking for a simple, quick, and secure way to run containers without managing any servers.
+
+One way for Alex to run his containerized applications without using Kubernetes is to provision a virtual machine, install container runtime, and run the application on it. But this process still increases the operational complexity as it would require him to manage virtual machines and servers, patch the operating systems, and update the container runtime regularly.
+
+Containers have become the favored method of packing, deploying, and managing modern applications. Among container solutions, OCI Container Instances offers the quickest and the most straightforward way to launch containers. By eliminating the operational complexities, OCI Container Instances enable users to run, containerize the applications without having to manage any infrastructure.
+
+Users only need to supply the container images for their applications. And OCI takes care of the underlying container runtime and compute resources. The containers are hosted on fully managed compute infrastructure that's specifically designed for container workloads, providing robust workload isolation for enhanced security.
+
+Optimized for container workloads, a container instance is isolated at the hypervisor level and doesn't share the underlying OS kernel or CPU or memory resources with any other container instances. With this second layer of defense, containers of different applications no longer share the same OS kernel, which reduces the attack surface.
+
+![image](https://github.com/qriz1452/oci/assets/112246222/7eec1a77-78ba-42f2-b41e-f80c8df814ac)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/2148a060-cfed-4f99-a908-fcc8ecc88b65)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/1ababd8e-206e-4382-8743-67d13797a43f)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/5b98b859-a932-439f-8cdd-dbd5e736960c)
+
+
+--------------------------
+
+ Working with Container Instances
+
+
+
+One is the compute-container-instances. The other one is the compute-containers. These two individual resources can also be clubbed as aggregate resource type under the compute-container-family.
+
+There are different permissions associated to different level of access. For example, inspect level of access provides you only with inspect permission, whereas read allows you both inspect and read. In the case of use level of access, you get inspect, read, update, start, stop, and restart permissions. Whereas with the manage level of access, you get access to all the permissions that are listed out here.
+
+Also make a note, for compute container instances, all permissions has prefix COMPUTE_CONTAINER_INSTANCE underscore the permission name. Talking about the compute containers individual resource type, here as you can see, the permissions are different as compared to the previous slide. You get inspect, read, update, log retrieve, create, and delete permissions based on the different level of access.
+
+Also make a note, all permissions here has prefix COMPUTE_CONTAINER underscore the permission name. Let's take a look at some of the policy syntax. For example, policies to let users create container instances.
+
+Here, you can allow a user group to manage compute container family within a given compartment. But also remember the user groups must have adequate OCI IAM policies to use other OCI supporting resources that are required to create OCI container instances.
+
+Another example is if you wish to control the access to container instance using the network security groups, the user groups should be allowed to use network security groups in the given compartment.
+
+Let's take a look at container instances shapes that are managed by OCI. A shape is a template that determines the number of OCPUs, amount of memory, and other resources that are allocated to a container instance. As you can see, we have standard E3, or standard E4.Flex shapes, which lets you customize the number of OCPUs ranging from 1 to 64 OCPU, and the amount of memory when launching your container instance.
+
+For both the flex shapes E3 or E4, you get up to 15 GB of ephemeral storage. The network bandwidth can range from 1 Gbps per OCPU and can go maximum up to 40 Gbps. And at the max, you can have 1 VNIC associated to a container instance shape.
+
+When you create a container instance, you choose how many OCPUs and how much memory it needs for the containers that will run on it. The network bandwidth scales proportionally to the number of OCPUs. This customization allows you to build container instances that fits your workload, which lets you get the best performance and the lowest cost.
+
+Let's discuss the basic details which we can configure while creating container instances. Talking about configuring networking. In the networking part, you can configure the primary network and subnet. You can specify the virtual cloud network and subnet to create the instance in. You can choose from either selecting existing virtual cloud network, or creating a new virtual cloud network, or even entering the subnet OCID.
+
+You can also assign a public IPv4 address to your compute instance. If the subnet is public, you can assign the instance a public IP address so that your instance is accessible over the internet. Under the Advanced options in the Networking section, you can use network security groups to control traffic.
+
+You can also use an available IP address of your choice from the subnet's CIDR. A host name can also be used for DNS within the cloud network. In the Advanced settings, you can configure various advanced options. For example, you can configure graceful shutdown timeout in seconds. This sets the amount of time container instance waits for the OS to shut down before powering off.
+
+You also get an option to configure the container restart policy. Customers can configure restart policies to restart containers within a container instance in case of failure ensuring that the application is always up. You can choose from always, never, and on failure options for your container restart policy.
+
+Tagging. If you have permissions to create a resource, then you also have the permissions to apply free-form tags to that resource. The next step is to configure containers. In the Configure containers section, you get to configure image options.
+
+Under Image options, you get to choose an image source. Here you have two options to choose from. One is the OCI Container Registry, which is the Oracle-managed registry that enables you to store, share, and manage container images.
+
+And other option is to use External registry. Container images can be pulled from any external registry such as GHCR, Quay.io, Docker Hub, or other private registries. You can also configure environment variables used by the container within the environmental variables section. Some of the use cases could be storing a port number in a variable, or storing a password in a variable, or a username for that matter.
+
+Again, you get an option to tag your containers. So if you have permissions to create a resource, you also have the permission to apply free-form tags to that resource. And in the Configure containers, you also can configure advanced settings. Under the Advanced Settings in the Resource tab, you can configure the number of resources that the container consumes in absolutes or percentages.
+
+By default, the containers use all resources in the container instance. So with the help of resource throttling, we can limit the CPU and memory usage in absolutes or percentage. Under the Startup option tab, you can configure working directory and ENTRYPOINT arguments for the containers. These working directory and ENTRYPOINT arguments will override the existing arguments using which these containers were created.
+
+And then you have the Tags tab, which helps you organize your resources according to the business needs. Now before we move ahead, let's take a look at some of the important points, which are good to know when working with container instances.
+
+First thing is setup of IAM policies. Appropriate IAM policies should be assigned to the user groups which are dealing with container instances. Creating a container instance. You can create a maximum of 60 containers on each container instance. Managing container instances. You can start, stop, and restart a container instance. Container instances uses standard shapes which pause billing when a container instance stops.
+
+Metrics. You can monitor the health, capacity, and performance of your OCI container instances by using various metrics. On deleting a container instance, when the containers are deleted by the service, any data on the ephemeral storage is lost.
+
+![image](https://github.com/qriz1452/oci/assets/112246222/26599c6d-5970-4cf7-9561-1298c3083344)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/dd88105f-c03d-4a80-a36e-b34f57219dd8)
+
 
