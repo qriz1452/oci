@@ -187,8 +187,10 @@ During automatic rollback, other in-progress stage continues running, but new st
 ![image](https://github.com/qriz1452/oci/assets/112246222/fe1e36f9-9cc1-473b-9a60-7b228bcad1b0)
 
 
+![image](https://github.com/qriz1452/oci/assets/112246222/5171dbef-51fb-4d81-a3ff-9c9b22ae6722)
 
 
+--------------
 
 
 
