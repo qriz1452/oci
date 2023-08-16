@@ -89,9 +89,102 @@ To wrap up our discussion, in this lesson, we covered DevOps project build pipel
 --------------------
 
 
+ Deployment Pipeline
 
 
+ 
 
+A deployment pipeline holds the requirements that must be satisfied to deliver a set of artifacts to the target environment. It's an integral part of the continuous deployment process within a DevOps project, which can be controlled by defining stages that run in serial or parallel. And it's usually triggered by a build pipeline but can also be run independently.
+
+I believe you still remember from the previous lesson that the build pipeline had a stage, which offered us an option to trigger deployment pipeline. The last point is talking exactly about it. Before we move ahead, let us understand when and when not to implement continuous deployment within your project.
+
+You must go for continuous deployment when you want to release features faster, when deployment is a continuous routine in your business setup, also when you want to discover issues before the release hits production. And you must go for continuous deployment when you have all the resources needed to automate your development lifecycle with less manual intervention.
+
+You must not go for continuous deployment when it is a one-time deployment that you're planning, or when the test automation is not mature enough to confidently push your artifacts to the production in an automated environment. Again, when your business case doesn't allow you to publish to production without going through any kind of user acceptance test. Also, if your project is a high-risk, high-profile project, then you must avoid using continuous deployment.
+
+At this point in the course, we are already well aware about the DevOps CI/CD practices. But usually, some people have a hard time understanding the difference between continuous deployment and continuous delivery. Let's address that first.
+
+The continuous delivery process typically includes at least one manual step of approving and initiating a deploy to production. In complex projects with multiple dependencies, the continuous delivery pipeline may include additional steps, which are either manual or automatic.
+
+On the other hand, continuous deployment is a step further by releasing every change that passes through the production pipeline directly to your clients without any human intervention. If an automated test fails, then the change will not be sent. But if everything checks out in the testing, the changes are deployed automatically.
+
+Let's talk about some advantages of using deployment pipelines. To start your deployment, you can either automatically run a deployment from your existing continuous integration platform using triggers, or you can run your deployment on-demand. The deployment pipelines also offers you advantages in terms of deploying to different environments in multiple regions. You can use either a parallel or a serial approach to do so.
+
+In your deployment pipeline, you can fully automate the deployment to include testing and delivery to each of your environment, such as developer, testing, staging, and production, and automatically promote the release all the way up to production. You can also set up deployments that include manual approval stages for automation with manual checks.
+
+Let's take a look at the deployment pipeline workflow. In this diagram, you can see how a sample application is deployed using OCI DevOps. The application is already built, stored in a repo, and is ready to be deployed to three different target environments-- OKE, instance groups, and functions.
+
+As you see in step one, the build output is stored in the container registry as an image. You can also store other artifacts in the artifact registry. In step two, the image artifacts from the registry and the configuration files from the repositories are copied into the target runtime environment.
+
+From the step three, you can notice once these artifacts and the configuration files are pushed to the target environment, they are easily deployed and are ready to operate. From step four, what we can see is the logs from the build runs, and the deployments are sent to the OCI logging service for audit and governance. And your team can receive notifications from the events of your DevOps pipelines through the notification service. These logs can be further used for observability and management purposes.
+
+Let's take a look at the release strategy. The deployment goes through these continuous delivery stages orchestrated by the OCI DevOps service. In this example, consider a build pipeline that executes successfully and generates artifacts for deployment. It is configured in a manner that it triggers the deployment pipeline.
+
+The deployment pipeline here depicts how we can deploy those artifacts onto the test environment to perform regression or security testing. The test should passes, then you can promote the artifacts to your staging environment. Here we can perform smoke and UAT tests.
+
+After staging, you can run a canary test, send a small amount of production traffic to a new artifact, and then monitor the metrics. Canary test is used as a litmus test by studying how it behaves for a small percentage of end users. This allows DevOps team to collect data to help them figure out if their code is behaving the way they want it to or not.
+
+Upon receiving user feedback, if everything looks good, you can go ahead with full release to the production. Using the OCI DevOps service, you can automate as much as you want to, with the deployment pipeline and automated builds run without intervention.
+
+The DevOps projects offer many options to customize your deployment pipeline. Let's look at how to manage the deployment pipeline. You can edit pipelines to add, modify, or delete stages. You can also configure parameters to override the default values.
+
+The deployment pipeline can be done manually or triggered by the build pipeline automatically. Once the deployment pipeline is run, we get the provision to monitor the progress of every stage. Rollback is one of the highlights of deployment pipeline, which in case of failures rolls back the state of application to previous successful version deployed.
+
+Similar to how we create stages in build pipeline, we must also create stages in the development pipeline. What changes here are the options used to create them. Let's take a closer look at each of the options available.
+
+Let's understand some facts about working with deployment pipeline stages. You can add multiple stages to a deployment pipeline where each stage represents an action. For example, applying a Kubernetes manifest to your OKE cluster.
+
+Stages can be added in sequence or in parallel. You can remove any stage from the pipeline if they are no longer required. Deployment pipelines offer many deployment strategies to meet your needs. You can perform rolling updates, as well as deploy using blue-green and canary release strategies.
+
+With the ability to rollback a deployment, coupled with support for various release strategies, deployment pipeline provides the capability to minimize the failure effect due to a bad deployment. Note, OCI DevOps deployment pipelines can work across OCI regions. From a single deployment pipeline, deployments can be executed into multiple regions, in parallel or sequentially.
+
+Displayed on the screen are the three categories that the user can choose from while creating deployment pipeline stages. The user can choose the deployment environment stage to choose the target environment where he wishes to deploy the software.
+
+Users can also select the control stage, which will help them manage the progress of their deployment pipeline stages. They can also select the integration stage, which will help them invoke a function to run some custom logics.
+
+Let's talk about configuring parameters. Parameters are name of placeholders that exist in the DevOps resources. They are available to all the resources within the pipeline.
+
+All parameters using the pipeline must have a value before the pipeline is run. When the pipeline is run, you have the option to override the default value of the parameter with an argument value for that run. In situations where a parameter has both argument and default value, the argument value always takes the precedence.
+
+All right. So if we can define parameters for both the pipelines, what happens if the same parameter is defined at both places? In that case, remember that if you set parameter in both build and deployment pipelines, the one set in the build pipeline takes precedence.
+
+A pipeline parameter name can be used in placeholder that exists in your DevOps resources and certain API fields. The placeholders are special strings with a unique format starting with the dollar symbol and the parameter name within the curly braces. When a pipeline is run, the placeholder is substituted with the value of the corresponding pipeline parameter.
+
+As you can see from the example, we have a code snippet from the Kubernetes manifest file and which has a placeholder in it. So this placeholder will be substituted with the parameter value, and the pipeline is run.
+
+How to run a deployment pipeline? A deployment pipeline can be invoked automatically by setting up build pipelines through your deployment stage or manually through dashboards on the OCI Console.
+
+We can organize our deployment pipeline by editing it as per requirement or deleting it when not required. You can always add new stages to the existing pipeline or delete the existing ones. You can also update deployment name, parameters, and artifacts used, and rerun the previously completed deployments. Remember, if you wish to delete the deployment pipeline, you must delete all the associated stages beforehand.
+
+Selecting artifacts for deployment pipeline stage. The build artifacts that are generated and delivered by the build pipelines to the artifact registries can be mapped here in the deployment pipeline to be delivered to the target environments based on different scenarios.
+
+For example, you can select the manifest files from the artifact registry to be applied on the OKE, or deployment file if you're trying to deploy it to the instance group, and container images or functions. The deployment view is your real-time dashboard for your deployment to see the order of stages, their progress status, and real-time logs of stages in action.
+
+When the deployment is complete, you can view the results in the Deployment page, which houses the status and results of all previous builds. You can follow the progression of the pipeline directly from the Deployment page. Every stage that is running changes its border color to yellow. A completed stage turns green in case of success, and red in case of failure.
+
+You can also visualize logs on the right-hand side of the page. Deployment is successful if all these stages are completed successfully. A snapshot of the pipeline is shown throughout the deployment process. The progress is tracked. After completion, a history of the actions taken is maintained. When deployment completes, you can view the status of deployment, including a snapshot of the graph.
+
+In DevOps project, deployments can be rolled back manually or automatically. You must think of a rollback plan and configure it during this stage creation step. Configuring rollback minimizes downtime if a deployment fails.
+
+After a deployment is completed, you can roll back a failed stage in the deployment pipeline to the previous successful release versions. During automatic rollback, other in-progress stage continues running, but the new stage cannot run, and the deployment completes as failed. There can be several reasons for rollback. Some of them are bug fixes, failed deployments, encountered vulnerabilities, and so on.
+
+When creating a deployment pipeline for a cluster or an instance group, you can select either automatic rollback or manual rollback option from the Actions menu in the Oracle Cloud Console. If you wish to go for a manual rollback, you must identify the deployment that has failed, and then select the deployment ID to rollback based on the deployment timestamp, and then rollback.
+
+Remember, rollback of a single stage in the pipeline is considered a new deployment, and the snapshot is provided only for that stage during the deployment. As you can see from the image over here, if you wish to go for manual rollback, you must choose no as an option for automatic rollbacks.
+
+When creating a deployment pipeline for a cluster or an instance group, you can select automatic rollback as an option. If the validation fails, the release is automatically rolled back. And if the stage fails, the last successful release version is deployed.
+
+During automatic rollback, other in-progress stage continues running, but new stages cannot run, and the deployment completes as failed. As you can see from the image over here, you must choose yes as an option to enable automatic rollback to last successful versions. 
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/3ec43054-63cb-416b-ac34-fd4ba1b4e416)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/bdd06ff1-8f6c-4669-9161-bdc22eb21605)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/cf2c4e00-329e-4603-bd96-de8fd5d06cdb)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/fe1e36f9-9cc1-473b-9a60-7b228bcad1b0)
 
 
 
