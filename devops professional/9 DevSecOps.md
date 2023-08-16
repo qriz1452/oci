@@ -174,6 +174,131 @@ So this is how it all works end-to-end. Keep in mind the object storage service 
 
 ----------
 
+OCI Vault: Secrets Overview
+
+I discussed the elements of the Vault service, which included the Vault itself, backed by a FIPS 140-2 Level 3 hardware security module that is either a shared or private HSM as well as the master encryption keys you can create or import into your Vault.
+
+Until now, we haven't really discussed the third important element, secrets. Secrets are credentials, such as passwords or tokens or any other confidential data that you need to use with other Oracle Cloud Infrastructure services or perhaps even with other external applications or systems. Storing secrets in a Vault provides greater security than you might achieve storing them elsewhere, such as in code or configuration files. And you can retrieve secrets from the Vault service when you need them to access resources or other services.
+
+You can create secrets by using the OCI Console UI, as shown here, or programmatically in code or from scripts using the OCI SDK, CLI, or REST API. In addition, each secret is automatically assigned a version. So when you rotate a secret, you provide new secret contents to the Vault service to generate a new secret version.
+
+Periodically rotating secrets reduces the impact in case a secret is exposed. The secret's unique Oracle-assigned identifier called an Oracle Cloud ID remains the same across rotations allowing the Vault service to rotate secret contents to meet any rules or compliance requirements you might have, while programmatic access remains the same.
+
+Optionally, there are rules you can apply to specific secrets preventing the re-use of secret contents to limit the scope of affected resources in the event of a security breach is the first one. You can deprecate a secret version and then delete it if you find out it can no longer be safely used. And you can choose whether secret re-use rules apply even to deleted secret versions.
+
+You can also configure an expiry rule to specify a time interval for how long a secret version can exist. The longer that a set of credentials are used, the more time an attacker has to try to access or decipher them. As a best practice, frequently updating a secret with new contents helps keep credentials safer from users with malicious intent or, at the very least, makes shorter the period of time during which compromised credentials can unknowingly be used or disseminated.
+
+You can configure a secret version to expire anywhere from 1 to 90 days. However, the secret can also have an absolute expiration date and time, ranging from day to one year after its creation date. You can configure either of these values or both. And you can decide whether the secret contents are blocked past the expiration date.
+
+In order to gain a better understanding for using secrets, let's first take a quick look at the OCI Console UI. So here I am in my console on the Vault's page, under Identity and Security. You can see I've already created a Vault called Demo. And inside the Vault, I have a few master encryption keys that can be used to include those that are software or HSM or those that are using the AES algorithm and so forth.
+
+What I want to focus on now is the secrets. I've already created one secret here called ADB-username. And I just do that for sake of time here. I can view the current secret details. Right now we only have one version. So if I want to see the contents, I can click in there. By default, it shows the Base64. I can show the clear text. As you can see, this is the username for the database, which, in this case, is the admin user.
+
+So for demonstration purposes, what we're to do is go back, and we're going to create ourselves a new secret that I'll use for the database user's password. So I'll come in here, give it a name. Optionally, I'll provide a description, which will be handy for anyone else reviewing this. And of course, we need to select an encryption key. I'll choose this one. And then we need to provide some contents.
+
+Now, for this demonstration, of course, I just have a demonstration password. And I can create that secret. I can also see what that looks like in a Base64 conversion. Now, it'll take just a few moments to create that secret. While that's being created, I want to point out what we're going to need in order to use these secrets programmatically or from a script.
+
+So I'll go back to our ADB-username to show you that, when you click on a secret, there is a unique OCI ID. And I could just copy it. Of course, for demonstration, I'll just show you what that looks like. And that's the OCID value that I'll need to have available to my developers.
+
+Now, what's interesting is, once they have this OCID, that's going to remain the same regardless of how many times we rotate or update the secret contents. This will always be, in this case, associated with the ADB-username. And of course, they'll also need the OCID of the password, which has now been created. And it too would have a unique OCID that we would use in our environment.
+
+And by the way, as a reminder, for automating security requirements, the DevOps engineer can manage all of these same configurations programmatically using the Vault CLI or API and scripts or code instead of manually doing what I just did in the OCI Console to include obtaining the secret's Oracle Cloud ID. So now that we have the OCID of each secret, in this Kubernetes examples, I've added two new Vault variables in the YAML build file, which is used to build the code, create a container image, and then deploy to an OKE cluster.
+
+The Maven Build command will reference those variables, in this case, the database username and password. In this Oracle functions example, instead of defining hard-coded variables used to connect to the OCI container registry within this YAML configuration file, I replace them with Vault variables, which are set to the Oracle Cloud IDs of those two secrets in my Vault.
+
+And for any other use case that doesn't necessarily involve Microservices deployed within OKE cluster or Oracle functions, you can still dynamically retrieve the secret credential using the OCI Vault API or CLI, programmatically, using that same secret OCID. For more detailed information on leveraging the Vault CLI, API, or SDK functions, be sure to review our online documentation and tutorials. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/aac02afc-c225-49b4-aa59-d3b9b64b7dfe)
+
+
+
+--------------
+
+: Application Dependency Management Overview
+
+ So we all know Tricia, right? This time around, Tricia was worried about the security and compliance of their pharmacy applications CI/CD workflows.
+
+She asked Mo if OCI DevOps provides a method for ensuring best practices in this regard. Mo responded positively, but wanted more information about Tricia's specific requirements. Tricia then explained how a recent code release into the production had a security bug that went unnoticed. And although the fix did eventually, the process of scanning and patching the vulnerability was a manual one.
+
+Mo was concerned about the potential consequences of such a security breach. Tricia realized that they need to find a way to automate security compliance in their DevOps service pipelines. They discussed several options, and finally Mo suggested utilizing the OCI Application Dependency Management Service.
+
+Now before we get into the specifics of what the OCI Application Dependency Management Service does, for a better understanding, let's go over a few key concepts and terminology. Vulnerability is a weakness that can be exploited by attackers to gain unauthorized access to a computer system.
+
+For example, dependency vulnerabilities. If the dependencies used in the application development are not updated regularly, they can contain known vulnerabilities that can be exploited by attackers.
+
+Next is common vulnerabilities and exposures, also known as CVE. Common vulnerabilities and exposure is a dictionary of publicly disclosed computer security vulnerabilities and exposures. Each CVE contains a unique identifier or description of the vulnerability or exposure and information about any known software or hardware that is affected by the vulnerability.
+
+This information can be used to track and reference the vulnerability in various databases, tools, and reports. CVE is maintained by the MITRE Corporation, a non-profit organization that operates federally funded research and development centers. Other organizations, such as the National Vulnerability Database, also abbreviated as NVD, use CVE identifiers to categorize and index vulnerabilities.
+
+CVSS stands for Common Vulnerability Scoring System. It is a framework for assessing the severity of computer systems vulnerabilities based on various factors, such as the potential impact of the vulnerability, how easily it can be exploited, and the level of access required to exploit it. The CVSS framework assigns a numerical score to each vulnerability ranging from 0 to 10, with higher scores indicating greater severity.
+
+Scores from 0.1 to 3.9 indicate a low level of severity. Scores from 4.0 to 6.9 indicates a medium level of severity. Scores from 7.0 to 8.9 indicate a high level of severity. And scores from 9.0 to 10.0 indicate a critical level of severity.
+
+When a new vulnerability is published in the National Vulnerability Database, it will have a CVSS score assigned to it using either the CVSS version 2 or CVSS version 3.X scoring systems.
+
+Let's understand vulnerability audits. A vulnerability audit describes the vulnerabilities of your application and its dependencies. A vulnerability audit in the OCI is associated with a knowledge base.
+
+Talking about knowledge base, a knowledge base is associated with vulnerability audits. And when you configure a vulnerability audit, you specify the knowledge base with which it is associated. Knowledge base is required to contain the results of Application Dependency Management Service.
+
+Now let's cover the Application Dependency Management Service in detail. The Application Dependency Management Service in Oracle Cloud Infrastructure helps detect security vulnerabilities in the dependencies of your application. This means that the ADM scans all the external libraries and frameworks that your application relies on, and alerts you if there are any known vulnerabilities.
+
+ADM relies on scores provided by the Common Vulnerability Scoring System, which is an industry standard scoring system that assigns a severity score to security vulnerabilities. The CVSS score helps you understand the potential impact of a vulnerability and prioritize which vulnerabilities to remediate first.
+
+ADM is a tool that can benefit many different teams within your organization. Whether you are a developer, operations specialist, DevOps engineer, or support team member, ADM can help you answer critical questions about your application dependencies by identifying which dependencies your application relies on and which ones contain security vulnerabilities.
+
+ADM is typically configured in the Managed Build stage of a DevOps pipeline. This means that the ADM will automatically scan your application for vulnerabilities as part of the build process, allowing you to identify and remediate any issues early in the development cycle. By integrating ADM into your DevOps pipeline, you can ensure that your applications are secure and reliable from the very beginning.
+
+Once ADM has identified vulnerabilities in your application dependencies, it is important to take action to remediate them. One way to do this is by updating your dependencies to the most current secure versions. By keeping your dependencies up to date, you can ensure that your application is running on the most secure and reliable code possible, which reduces the risk of security breaches and any other issues.
+
+To wrap up, we covered some important terminology and concepts, and understood how OCI Application Dependency Management Service can be leveraged to gain valuable insights into your application dependencies and proactively address potential security vulnerabilities. Helping to ensure that your applications are secure, reliable, and perform at their best. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/316a649c-b582-4159-b2ca-a12e4a9f8904)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/b9312b28-7902-472d-811f-7c16fd244d98)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/67b1a074-fbcb-4584-957f-50d7a0c83a25)
+
+
+
+-------------------
+
+ Using Application Dependency Management with the OCI DevOps Service
+
+
+
+
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/7fee9f34-2454-4611-9e19-8d30804f1e4e)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/369b3e9e-47ad-44a6-a123-93ab777b7d23)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/d4955424-202a-469e-a736-fbfe3dfbf6c1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
