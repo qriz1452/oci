@@ -552,6 +552,137 @@ The container engine for Kubernetes creates worker nodes in a cluster with an au
  
 
 
+In accordance with the ongoing enhancements to the OKE service, when creating a new cluster with container engine for Kubernetes, you specify the cluster type as one of the following. The first type is the basic clusters. Basic clusters support all the core functionality provided by Kubernetes and container engine for Kubernetes. Basic clusters come with a service level objective but not a financially backed service level agreement. This means that Oracle guarantees a certain level of availability for the basic cluster, but there is no monetary compensation if that level is not met.
+
+On the other hand, we have the enhanced clusters. Enhanced clusters support all available features, including features not supported by basic clusters. So let's go ahead and take a look at features supported by enhanced clusters.
+
+As we move towards a more digitized world, the demand for infrastructure continues to rise. However, with virtual nodes, managing the infrastructure of your cluster becomes much simpler. The burden of manually scaling, upgrading, or troubleshooting worker nodes is removed giving you more time to focus on your applications rather than the underlying infrastructure. Virtual nodes provide a great solution for managing large clusters with a high number of nodes that require frequent updates or scaling.
+
+With this feature, you can easily simplify the management of your cluster and focus on what really matters, that is your applications. Managing cluster add-ons can be a daunting task. But with enhanced clusters, you can now deploy and configure them in a more granular way. This means that you can manage both essential add-ons like CoreDNS and kube-proxy as well as a growing portfolio of optional add-ons like the Kubernetes Dashboard. With enhanced clusters, you have complete control over the add-ons you install or disable, the ability to select specific add-on versions, and the option to opt-in or opt-out of automatic updates by Oracle. You can also manage add-ons specific customizations to tailor your cluster to meet the needs of your application.
+
+Oracle manages the lifecycle of add-ons so that you don't have to worry about deploying them yourself. This level of control over add-ons gives you the flexibility to customize your cluster, to meet the unique needs of your applications, making managing your cluster a breeze. Scaling your clusters to meet the demands of your workload can be a challenging task. However, with enhanced clusters, you can now provision more worker nodes in a single cluster, allowing you to deploy larger workloads on the same cluster which can lead to better resource utilization and lower operational overhead. Having fewer larger environments to secure, monitor, upgrade, and manage is generally more efficient and can help you save on cost.
+
+Remember, there are limits to the number of worker nodes supported on an enhanced cluster, so you should review the container engine for Kubernetes limits documentation and consider the additional considerations when defining enhanced clusters with large number of managed nodes. Ensuring the security of your cluster is of utmost importance in today's digital landscape. With enhanced clusters, you can now strengthen cluster security through the use of workload identity. Workload identity enables you to define OCI IAM policies that authorize specific ports to make OCI API calls and access OCI resources. By scoping the policies to Kubernetes service account associated with application ports, you can now allow the applications running inside those ports to directly access the API based on the permissions provided by the policies.
+
+Additionally, OCI Audit automatically tracks all API calls made by Kubernetes workloads running on the cluster providing an extra layer of security and accountability, ensuring high availability and uptime of your Kubernetes API server is essential for the smooth operation of your cluster. With enhanced clusters, you can now rely on a financially backed service level agreement tied to Kubernetes API server uptime and availability. This means that you can expect a certain level of uptime and availability for your Kubernetes API server, and if it degrades below the stated SLA, you'll receive compensation. This provides an extra level of assurance and helps ensure that your cluster is highly available and performant.
+
+Now let's take a look at the notable features that are not supported by these clusters. So talking about the basic clusters, notable features which are not supported by basic clusters are the virtual node pools, fine-grained cluster add-on deployment and configuration, workload identity for enhanced security, increased numbers of worker nodes, and, again, financially backed service level agreement. But these are not supported by basic clusters. On the other hand, enhanced clusters support all features supported by basic clusters plus the ones that we saw in the previous slide. Let me talk about a few points to remember while creating basic and enhanced clusters.
+
+When using the console to create a cluster, a new cluster is created as an enhanced cluster by default unless you explicitly choose to create a basic cluster. If you don't select any enhanced features during cluster creation, you have the option to create the new cluster as a basic cluster. When using CLI or API to create a cluster, you can specify whether to create a basic cluster or an enhanced cluster. If you don't explicitly specify the type of cluster to create, a new cluster is created as a basic cluster by default.
+
+Creating a new cluster as an enhanced cluster enables you to easily add enhanced features later even if you didn't select any enhanced features initially. If you do choose to create a new cluster as a basic cluster, you can still choose to upgrade the basic cluster to an enhanced cluster later on. However, you cannot downgrade an enhanced cluster to a basic cluster. These points are really important while you consider selection of a basic cluster or an enhanced cluster for your usage. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/ff8705d2-a4ec-40bf-a62d-2a4fc6fc8ad3)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/788e593d-3790-47b3-bb51-f048e3180412)
+
+
+------
+
+
+ Serverless Kubernetes with Virtual Nodes
+
+
+
+Mo, the solution architect asks Tricia who's the team lead about the pharmacy application running on the OCI cluster. Tricia responds positively and mentioned that they haven't had any issues so far. However, she also admits that managing the nodes on the cluster requires some manual work and specific expertise which their team may not possess.
+
+Mo then suggests using virtual nodes, a feature offered on OKE which Tricia hasn't heard of before. This feature can eliminate the need for manual work and reduce the need for specific expertise, making node management more efficient and cost effective. Tricia expresses her interest and asks Mo to explain more about virtual nodes.
+
+So before we dive deep into virtual nodes, let's have a basic understanding of what managed nodes are. Managed nodes run on compute instances within your tenancy, and are at least partly managed by you. In the context of Kubernetes, a node is a compute host that can be either a virtual machine or a bare metal host.
+
+As you are responsible for managing managed nodes, you have the flexibility to configure them to meet your specific requirements. You are responsible for upgrading Kubernetes on managed nodes and for managing cluster capacity. Nodes are responsible for running a collection of ports or containers, and they are comprised of two system components. The two most important components are the kubelet, which is the host brain, and the container runtime such as CRI-O, or containerd.
+
+Nodes have unique requirements that are specific to your workloads such as GPUs, local NVMe drives, RDMe use cases, ARM, or x86 architectures, and various other scheduling requirements. By targeting your workloads to specific nodes based on your requirements, you can optimize performance and resource utilization for your specific use cases.
+
+So now that we have an understanding of how managed nodes operate, let's go ahead and understand the virtual nodes. Virtual nodes on the other hand, are fully managed and highly available nodes that look and act like real nodes to Kubernetes. They are built using the open source CNCF virtual Kubernetes project, which provides the translation layer between OCI and Kubernetes.
+
+Also note, OCI is the first major Cloud provider to offer a fully managed virtual Kubernetes product that provides a serverless Kubernetes experience through virtual nodes. Virtual nodes are configured by customers and are located within a single availability and foil domain within OCI. Virtual nodes have two main components-- port management and container instance management. Virtual nodes delegates all the responsibility of managing the lifecycle of ports to virtual Kubernetes while on a managed node, the kubelet is responsible for managing all the lifecycle state.
+
+The key distinction of virtual nodes is that they support up to a 1,000 ports per virtual node with the expectation of supporting more in the future. We will go over this in greater detail in the following lessons. So let's do a quick overview of the virtual nodes.
+
+Virtual nodes offer a fully managed experience where customers don't have to worry about managing the underlying infrastructure of their containerized applications. Virtual nodes simplifies scaling patterns for customers. Customers can scale their containerized application up or down quickly without worrying about the underlying infrastructure, and they can focus solely on their applications.
+
+With virtual nodes, customers only pay for the resources that their containerized application use. This allows customers to optimize their costs and ensures that they are not paying for any unused resources. Virtual nodes can support over 10 times the number of ports that a normal node can. This means that customer can run more containerized applications on virtual nodes, which reduces operational burden and makes it easier to scale applications.
+
+Customers can leverage container instances is serverless offering from OCI to take advantage of many OCI functionalities natively. These functionalities include strong isolation and ultimate elasticity with respect to compute capacity. To wrap up, virtual nodes on OCI OKE we offer a serverless Kubernetes experience, allowing customers to focus solely on their containerized application without worrying about managing the underlying infrastructure. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/96987a30-9a2d-4aea-949d-a21654c8e3e0)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/032d9841-30f2-42be-957b-15a832fb1c6f)
+
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/9338e2c4-d3e6-4ccb-8510-5eb75677f527)
+
+
+
+--------------
+
+ Comparing Virtual Nodes with Managed Nodes
+
+
+When creating a node pool with container engine for Kubernetes, you have the option to specify the type of Oracle nodes as either managed nodes or virtual nodes. However, it is important to note that there are some key differences in the features supported by each type. Let's dive into those differences and explore each approach.
+
+The primary point of differentiation between virtual nodes and managed nodes is in their management approach. When it comes to manage nodes, users are responsible for managing the nodes. They have the flexibility to configure them to meet the specific requirements.
+
+Users are also responsible for upgrading Kubernetes on managed nodes and for managing cluster capacity. You can create manage nodes and node pools in both basic clusters and enhanced clusters, whereas in virtual nodes, virtual nodes provide a serverless Kubernetes, experience enabling users to run containerized applications at scale. The Kubernetes software is upgraded and security patches are applied while respecting application's availability requirements.
+
+Also make a note, you can only create virtual nodes and virtual node pools in enhanced clusters. Another key point of differentiation is in their approach to resource allocation. When it comes to managed nodes, the resource allocation is at the node pool level and the users specify CPU and memory resource requirements for a given node pool. In the virtual nodes, the resource allocation is done at the pod level, where you can specify the CPU and memory resource requirements, but this time, as requests and limits in the pod specification.
+
+A third point of differentiation between virtual nodes and managed nodes is in their approach to load balancing. When it comes to managed nodes, load balancing is between the worker nodes, whereas in virtual nodes, load balancing is between pods. Also, load balancer security list management is never enabled, and you always must manually configure security rules. When using virtual nodes, load balances distribute traffic among pods' IP addresses and then assign node port. As you can see, the syntax says pod-ip colon nodeport rather than node-ip colon nodeport.
+
+The next point of differentiation is pod networking. Under managed nodes, both the VCN-Native Pod Networking CNI plugin and the flannel CNI plugin are supported. When it comes to virtual nodes, only VCN-Native Pod Networking is supported.
+
+Also, only one VNIC is attached to each virtual node. Remember, IP addresses are not pre-allocated before pods are created. And the VCN-Native Pod Networking CNI plugin is not shown as running in the kube-system namespace. Pod subnet route tables must have route rules defined for a NAT gateway and a service gateway.
+
+Next step is scaling Kubernetes clusters and node pools. So when it comes to managed nodes, customers have responsibility for adjusting cluster capacity in response to the changing requirements. They can scale the cluster and node pool up and down by changing the number of managed node pools and nodes respectively. They also have an option to enable autoscaling to automatically scale managed node pools and pods.
+
+When it comes to virtual nodes, operational overhead of cluster capacity management is handled for you by OCI. A virtual node pool scales automatically and can support up to 500 pods per virtual node. Users also have an option to increase the number of virtual node pools or virtual nodes to scale up the cluster or node pool respectively.
+
+Let's talk about pricing. Under managed nodes, you pay for the compute instances that execute applications, whereas under virtual nodes, you pay for the exact compute resources consumed by each Kubernetes pod. So to wrap up, when it comes to choosing between virtual nodes and managed nodes for your Kubernetes cluster, there are several key points of differentiation to consider, including management approach, resource allocation, load balancing, pod networking, scaling, and pricing. By understanding the benefits and drawbacks of each approach, you can make an informed decision that meets the need of your specific application and workloads. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/b55cf269-bda3-44ca-b672-cc1387889b78)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/de4604bf-4dcd-4f0a-a7d3-13980f72530e)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/94b36ccb-bd7d-466a-8c0e-00e63abaf631)
+
+ 
+![image](https://github.com/qriz1452/oci/assets/112246222/ce006c0d-a3fa-4dc6-90bb-e4bac40bdd8b)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/6f61f696-14d1-45e1-adfd-c91e5b154c34)
+
+
+=================
+
+ OKE add-on Lifecycle Management
+
+
+Cluster add-ons are software tools that support and extend the functionality of Kubernetes cluster. Some cluster add-ons are essential for a cluster to operate correctly such as CoreDNS add-on, the Flannel or OCI VCN-Native Pod Networking CNI plug-in add-on and the kube-proxy add-on. Other cluster add-ons are optional components and extend core Kubernetes functionality to improve cluster manageability and performance, such as Kubernetes Dashboard, Oracle Database Operator, Oracle WebLogic Operator, and more.
+
+When using enhanced clusters, you can use container engine for Kubernetes to manage both essential add-ons and a growing portfolio of optional add-ons, where you can enable or disable specific add-ons, you get to select add-on versions, you can opt into and out of automatic updates by Oracle. You also get to manage add-on specific customizations using approved key value pair configuration arguments.
+
+Let's understand the goals of OKE cluster add-on lifecycle management. The aim of this feature is twofold. Firstly, it intends to simplify the process of installing common operational tools for the customers and delegate the management of those tools to Oracle. The goal is to significantly reduce the operational burden for all the users.
+
+The second objective of this feature is to provide advanced users with more flexibility to configure cluster software and support complex use cases. Add-on lifecycle management allows users to disable or opt out of specific add-ons as needed. For example, if you have specific compliance or audit requirements, you can choose to pin a particular add-on version and have greater control over when your add-on is updated
+
+Additionally, you can bring your own alternative add-ons such as Calico and disable the OCI Native Pod Networking CNI. These supported customizations enable you to tailor your add-ons to your specific use cases while still taking advantage of Oracle's lifecycle management. Furthermore, if you use Oracle's provided software, you can choose to have it fully managed by Oracle, including automatic updates.
+
+Let's examine some key points that can aid in effectively working with cluster add-ons. Talking about essential cluster add-ons, one thing to remember is when you create a new cluster, you cannot disable essential cluster add-ons. However, when editing an existing cluster, you can choose to disable an essential add-on. If you do disable an essential cluster add-on, you are taking responsibility for deploying and configuring an alternative add-on to provide equivalent functionality.
+
+Talking about automatic updates, when creating a new cluster, essential cluster add-ons are set to automatically update. However, you can choose to not have an essential add-on automatically updated. If you do so, you're taking responsibility for keeping the add-on up to date.
+
+The next point covers configuring add-ons. When you enable a cluster add-on, you can configure the add-on by specifying one or more key value pairs to pass as arguments to the cluster add-on. For example, for the Kubernetes Dashboard, you specify a value of 3 for the numOfReplicas key.
+
+The last point is about disabling add-ons. When you disable a container add-on using Console, the add-on on is not removed from the cluster but is simply not used. To completely remove the add-on, use the CLI or the API. 
+
+
+
+
+ 
 
 
 
@@ -559,6 +690,13 @@ The container engine for Kubernetes creates worker nodes in a cluster with an au
 
 
 
+
+
+
+
+
+
+ 
 
 
 
