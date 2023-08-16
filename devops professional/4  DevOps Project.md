@@ -63,3 +63,72 @@ After you define an external connection, changes to your existing Git repo are a
 ![image](https://github.com/qriz1452/oci/assets/112246222/95ebdf15-f8b6-43cc-94ad-eae43acf5b7d)
 
 
+------------------
+
+Artifacts and Registeries 
+
+
+An artifact is a reference to any binary, package, manifest, image, or other files that make up your application, which is deployed on target environments. They are used to specify software package versions for deployment and must be defined with parameters like name, type, and location before a build is run.
+
+OCI has two types of registries for storing, sharing, and managing artifacts-- Container Registry, also called Oracle Cloud Infrastructure Registry, or OCIR, is an open standard-based Oracle-managed service that stores multiple versions of Docker or other container images plus related files like Helm charts. These images can be pushed to a Kubernetes cluster for deployment using OKE.
+
+Container Registry was covered in greater detail in the previous module, so let's discuss the other type of registry that is the Artifact Registry. Artifact Registry is a placeholder for a software package, library, .zip file, or other types of files used for deploying applications. These files are fetched and used when the deployment pipeline is triggered. So let's look at the Artifact Registry in more detail.
+
+This slide will cover the concept of Artifact Registry, which will help you manage your artifacts. The first point is the repository and artifact names. When you create a repository to group similar artifacts, you give it a repository name. If you leave the name blank, the system automatically generates a name that you can change later. When you upload an artifact to a repository, you specify your path and version for it. Based on your input, an artifact name is assigned that combines these two elements, as you can see in the example over here. Note that slashes do not create a directory structure, but you can use them to organize the repository.
+
+Versioning-- because of incremental updates to artifacts, you can assign versions to artifacts. This way, you can associate builds with artifacts version and roll back to previous versions when required.
+
+Immutability-- when you create a repository, you can designate it as immutable, which means that the artifacts uploaded to it becomes immutable. These artifacts are used as is and cannot be replaced. Immutable repositories ensure the integrity of the artifacts it manages. This means that rollbacks will always use the exact file from the last working version of the deployment and ensure that a developer's code change does not affect code created by others. Note that if you delete an immutable artifact, you cannot assign its name to another artifact.
+
+Service limits-- in each region that is enabled for your tenancy, you can create up to 500 repositories in Artifact Registry, consuming a maximum of 500 GB in total. You are charged for the stored artifacts only. You can also integrate external Artifact Registries with your OCI DevOps.
+
+You can create references to these four types of artifacts in OCI DevOps. All but the container image can either point to an Artifact Registry or can be defined inline. Let's try to understand each one in detail.
+
+Container image repository-- it's a collection of related container images, which is used to manage different versions of an application. Deployment configuration is a YAML file that defines the artifacts for deployment and their locations to fetch them from. Kubernetes manifest-- it's a specification of a Kubernetes API object that describes the desired state of an object that Kubernetes will maintain when you apply the manifest. General artifacts-- general artifacts include file types like binaries, ZIP files, or other files. 
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/d027c3f5-9364-4465-af64-79bfb5fb44cd)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/3daee8d4-6e25-4222-a640-31cc2438a305)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/5f1c44f3-30ea-4c09-80fb-d240fb7b20a6)
+
+
+---------------
+
+: Environments
+
+
+
+An environment is a collection of your computing resources where artifacts are deployed. You can also consider them as a target platform for your applications. Different target runtime environments supported in OCI include group of compute instances running Oracle Linux and CentOS, Oracle Container Engine for Kubernetes, and function applications.
+
+Before you create references to a target environment, you must first create a target environment if it doesn't already exist in the OCI console. Environment can be created in different OCI region than the region of the deployment pipeline. This allows developers to extend their deployment to multiple OCI regions. Which environment you choose for deployment depends on your needs based on flexibility, security, speed, and several other factors. This graph here helps us examine trade-offs between control, security, and cost with that of flexibility, portability, and speed for the choice of target environments that are available.
+
+Let's take a closer look at each environment. Bare metal is the least versatile, most costly option, but it provides the most control and security. It's a good option for projects that require a more constant, larger, or separate and secure space.
+
+With virtual machines, different operating systems can run on a single machine, and VMs can be commissioned and decommissioned more easily than bare metal. This allows for more versatility, scaling and resource sharing. Shared applications and physical hardware provide cost savings, disaster recovery, speed, and faster provisioning. Each VM still requires its own operating system. This can be a benefit, as you can run multiple applications requiring different operating systems on a single piece of infrastructure. But it uses more resources and spins up in minutes, not seconds.
+
+Kubernetes clusters runs group of application containers that are portable, lightweight, isolated, and standardized. They contain everything needed to run an application, so you don't need to rely on what is on the host, which speeds up the coding process. They also share OS, bug fixes, patches, and often binaries and libraries, so they spin up more quickly and require fewer IT resources to deploy and manage than VMs, making it ideal for high-density environments and for small and medium deployments, where you need to do more with fewer resources.
+
+Functions. Functions make computing power or backend services available on demand. You only need to select the required managed services. The serverless provider manages the underlying servers, so the user can focus on writing and deploying code. Functions also deploy in milliseconds, not seconds, so the application can go live as soon as the code is uploaded. Functions are best with dynamic workloads whose usage is changed frequently because you're paying for services only as you use them. 
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/bb8bc48a-7815-48ed-b44b-1f08bf27884d)
+
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/d26290fd-2d0e-424d-a653-d8fdfa8b8feb)
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/34382d3f-2357-4a87-9f7f-3212712ec80b)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/ddd34e01-c642-4266-b897-8ab603a226b0)
+
+
+
+------------------
+
+
+
+
+
