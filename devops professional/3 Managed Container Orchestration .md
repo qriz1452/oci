@@ -456,10 +456,59 @@ Once we are done creating the Python application, we will create a Docker image 
 
 ----------------
 
+ Observing an OKE Cluster
+
+ 
+Let's understand some concepts on monitoring an OKE cluster. Having created a cluster, you can monitor the overall status of the cluster itself and the nodes along with the node pools within it. In addition to monitoring the overall status of cluster, node pools, and the nodes, you can monitor their health, capacity, and performance at the more granular level using metrics, alarms, notifications. These topics will be covered in greater detail in the observability services module.
+
+Many OKE service requests do not take effect immediately. For example, the creation of a node pool isn't completed until all the required instances are active. In these cases, the request is fulfilled asynchronously, and its progress is tracked by an associated work request.
+
+A work request is an activity log that provides visibility into in-progress asynchronous operations, which enables you to track each step in the operations progress. If an operation fails, a work request can help you determine which step of the process had an error. Some operations affect multiple resources. For example, creating a node pool also affects instances. A work requests provides a list of resources that an operation affects.
+
+We can also monitor the summary of status of individual cluster and its control node planes. Cluster can have one of the following statuses. The cluster can be in creating state, which means cluster is in process of being created. The cluster can then move to the active state, which indicates cluster is running normally. The cluster can also go into a failed state, which indicates the cluster is not running due to an unrecoverable error.
+
+The cluster may show its status as deleting. This happens when the cluster is in the process of being deleted. The cluster status reflects deleted when the cluster has been deleted and all the resources have been released. The cluster can also show its status as updating when the version of Kubernetes on the control plane node is in the process of being upgraded. Also make a note that the clusters summary status is not necessarily directly related to the status of node pools and the nodes within the cluster.
+
+You also get to see a detailed summary of each worker node in the node pool. The worker nodes can have one of the following statuses. They can be in creating state, which means the node is being created. It can then go to an active status, which means the node is running normally. It can also go to an inactive status, which means that the node still exists, but it is not running.
+
+The node will show deleting status when the node is in the process of being deleted. The node status changes to deleted when the node has been deleted. And the node status reflects updating when the node is in the process of being updated.
+
+We can also monitor the status of our work request. Resources managed by container engine for Kubernetes can only support one work request at a time. Work requests launched while another work request is in progress will fail and return a conflict because some operations depend on the completion of other operations. You must monitor each operation's work request and confirm it has succeeded before proceeding to the next operation. A create node pool work request has a status of succeeded when the workflow successfully creates an instance and the instance is registered with an active status.
+
+Let's take a look at the various work request statuses. The work request status shows accepted when the request is in the work request queue to be processed. That status changes to in progress when a work request record exists for the specified request but no associated work completed record exist.
+
+The status can change to succeeded when a work request record exists for the request and the associated work completed record has the state succeeded. The status may show failed when a work request record exists for this request and an associated work completed record has the state failed. The work request status can reflect canceling when the work request is in the process of canceling. And it shows canceled in the work request has been canceled. 
+
+
+![image](https://github.com/qriz1452/oci/assets/112246222/bb924e44-3d11-49ef-b35a-de247bce722d)
+
+
+------------
+
+Accessing the OKE Dashboard
+
+The Kubernetes Dashboard is a web-based management interface that enables you to deploy and edit containerized applications. It helps you to assess the status of containerized application and troubleshoot the containerized applications.
+
+The Kubernetes Dashboard is not deployed in the clusters by default. However, you can deploy the Kubernetes Dashboard in your clusters that you create either using the manual approach or an automated approach. Let's have a look at the steps that you need to follow in order to deploy the Kubernetes Dashboard manually.
+
+The first thing that you have to do is you'll have to deploy the Kubernetes Dashboard to the OKE cluster by applying the kubectl command. The next step is to create the service account and cluster role binding in your cluster. After which you need to obtain an authentication token for the service account that you created. And, lastly, you should enable the kubectl proxy so that you can open the ports and access the Kubernetes Dashboard using the token that you generated in the previous step.
+
+The URL to access the Kubernetes Dashboard when deployed manually looks somewhat like this. Remember, when you manually deploy the Kubernetes Dashboard, it is deployed in the kube-dashboard namespace and not the kube-system namespace.
+
+Let's take a look at a few considerations before using the OKE Dashboard. You cannot run the Kubernetes Dashboard when you are managing your cluster access through Cloud Shell. The sessions created in Cloud Shell do not allow for any incoming connections, and there is no public IP address available, which makes it difficult to access the Kubernetes Dashboard from within the Cloud Shell.
+
+We do not recommend installing the Kubernetes Dashboard on production clusters due to the lack of extensible authentication support. If you do install the Kubernetes Dashboard, we recommend that you restrict the access within the cluster instead of exposing it externally via a load balancer or an ingress controller. The Kubernetes Dashboard is a common attack vector used to gain access to the Kubernetes cluster.
+
+To have container engine for Kubernetes automatically deploy the Kubernetes Dashboard during the cluster creation, you can create the cluster using the API and set the Is Kubernetes Dashboard Enabled attribute to true, which deploys the Kubernetes Dashboard in the kube-system namespace. Also, remember, you cannot add the dashboard as an add-on onto the existing clusters. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/500ba944-21a1-48f7-9ce1-adef9c7a82cd)
+
+![image](https://github.com/qriz1452/oci/assets/112246222/752ba784-e5ca-4fa3-87af-eca683c61425)
 
 
 
 
+-------------
 
 
 
