@@ -265,6 +265,41 @@ To wrap up, we covered some important terminology and concepts, and understood h
  Using Application Dependency Management with the OCI DevOps Service
 
 
+Let's take a look at the Application Dependency Management IAM policies.
+
+The following slide lists the permissions covered by each of the individual resource types included in the ADM family. The level of access is cumulative as you go from inspect to read, read to use, and use to manage. As you can see on the screen, individual resource types include adm-knowledge-base, adm-vulnerability-audit, and adm-work-requests.
+
+You can also go for aggregate resource type, which includes all of these individual resource types, which is labeled as adm-family. Currently, you can see the permissions available under the adm-knowledge-base individual resource type. For the different level of access and permission that one can have with the adm-knowledge-base are inspect, read, update, create, delete, and move.
+
+Also make a note that all permissions has prefix ADM_KNOWLEDGE_BASE_ the permission name. The list of permissions for adm-vulnerability-audit resource type doesn't really change. The only thing that you have to note is the permissions has prefix ADM_VULNERABILITY_AUDIT_ the name of the permission.
+
+And when we talk about adm-work-requests, here we have limited permissions, which includes, inspect, read, update, and cancel. And again, all the permissions has prefix ADM_WORK_REQUEST_ the permission name.
+
+Let's look at some of the sample IAM policy syntax for the ADM service. So this set of service lets a user group work with the ADM service. As you can see, we're allowing the user group adm-admins to manage adm-knowledge-bases, adm-vulnerability-audits, and adm-work-requests in a certain compartment.
+
+Here we have specified all the individual resource types. You can also choose to use the aggregate resource types to write fewer policies. So you can replace the above three lines with a single line of managing adm-family in a compartment.
+
+You can also assign the IAM policies to a certain user group based on the work clause. This limits the level of access provided to a certain group of users. Let's break down the steps necessary to get ADM setup with the OCI DevOps service.
+
+So as part of step one, you have to ensure that you have set up the required ADM IAM policies as we discussed in the previous slide. In step two, you need to ensure that you create a knowledge base within the ADM service. Knowledge base is required to contain the results of ADM. Here are the screenshots of how to create knowledge base. You must go to the ADM service in the OCI Console. And click on Create Knowledge Base. Give it a suitable name. And click on Create Knowledge Base again.
+
+Step three is creating a DevOps project and build pipeline. Oracle Cloud Infrastructure DevOps build pipeline service now includes a new security vulnerability scanning capability for application builds. Step four requires you to add the vulnerability audit build step. Vulnerability audit step can be added to existing DevOps service build instructions in the build_spec file.
+
+Let's talk about adding vulnerability audit build step in more detail. So as you can see, with this simple configuration, developers can control the configuration of the scan to pass or fail. Let's try to understand this configuration in more detail. Vulnerability audit step can be added to the existing DevOps service build instruction in the build_spec file where you specify the type as vulnerability audit and give it a name.
+
+Under configuration, currently it's supporting Maven dependencies based on pom.xml files. You need to specify the buildType. And you need to specify the pomFilePath. Under packagesToIgnore, developers can ignore certain artifacts or versions path.
+
+For example, you can specify that you have tolerance for certain medium or low severity CVEs or for specific packages like structs in the example. You can control the maximum permissible CVSS scores that is allowed within the project. I've already discussed the severity scores earlier.
+
+Lastly, you need to specify the OCID of the knowledge base created in step two. You also have to specify the OCID of the compartment containing the knowledge base. And you need to provide the name for the vulnerability audit report. This is the name with which the vulnerability audit reports get created within the ADM service.
+
+Now let's try to understand how the ADM service works with the diagram. When a developer commits code to a source code management repository, it triggers the manage build stage of the OCI DevOps build pipeline. A build environment is set up. And the steps within the build_spec.yaml file are executed.
+
+Vulnerability audits step reads the dependencies listed in the pom.xml file for the Maven project. The dependencies are then passed to the vulnerability knowledge base to check for any possible common vulnerabilities and exposures against them.
+
+If any CVEs with their corresponding CvssScores are found, they are checked against the maxPermissibleCvssScore. If the CvssScore is greater than the maxPermissibleCvss threshold, the build pipeline will fail. And if the CvssScore is below the threshold, the build pipeline executes successfully.
+
+And lastly, you need to view the vulnerability audit results. You can view the full tree of application dependencies along with the associated CVEs, examine the CVE scores to comprehend the issue and address the vulnerabilities. This is how the vulnerability audit results looks like. It contains the application dependencies, their equivalent CVEs and CvssScores. 
 
 
 
