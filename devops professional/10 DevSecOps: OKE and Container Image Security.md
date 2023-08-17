@@ -12,21 +12,6 @@ The kube-apiserver also includes admissions controllers required for advanced Ku
 ---------------------
 
 
-A Kubernetes Cluster is a group of nodes which can be physical or virtual machines. The node's capacity, its number of CPUs and amount of memory is defined when the node is created, but their shape can be scaled later on as needed.
-
-A cluster is comprised of control plane nodes, Oracle will typically manage three of these for high availability, as well as worker nodes that you organize into one or more node pools. And just like other Oracle Cloud Infrastructure services, OKE itself is an OCI Service and can be managed and administered using the OCI Console, CLI, or REST API.
-
-The Kubernetes Cluster control plane implements core Kubernetes functionality running a number of core Kubernetes processes to include the kube-apiserver to support API operations requested from the Kubernetes command line tool, commonly referred to as kubectl, as well as other command line tools.
-
-The kube-apiserver also includes admissions controllers required for advanced Kubernetes operations. And of course, any access to expose services deployed to worker nodes is provided by those workload-specific interfaces.
-
-And so in the next seven videos, I'll be discussing best practices and recommendations with regard to OKE Security starting with controlling access to your provisioned OKE clusters by leveraging both OCI Identity and Access Management policies, as well as Kubernetes role-based access control rules.
-
-Encrypting sensitive data objects such as authentication tokens and credentials as Kubernetes Secrets when they are stored in etcd. Using Pod Security Policies and OKE to limit or restrict access to resources, leveraging node pool security for OKE clusters and pods, defining the network access rules for communications to and from pods, multi-tenancy usage models for Kubernetes Clusters and how they provide for isolation, and finally, enhancing container image security using signature verification and vulnerability scanning.
-
-
--------
-
  Security for OKE: IAM Policies and RBAC
 
 
