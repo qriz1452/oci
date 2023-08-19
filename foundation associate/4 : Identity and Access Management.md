@@ -72,11 +72,93 @@ So that's Compartments for you. It's a very unique feature within OCI. We believ
 ![image](https://github.com/qriz1452/oci/assets/112246222/706a7060-b4ba-48f3-aea1-0a624b4712f3)
 ![image](https://github.com/qriz1452/oci/assets/112246222/d6ac64ca-b6f4-45d6-9843-1cdfd633757b)
 
-
-
-
-
-
-
-
 ----------
+
+ Now Playing : AuthN and AuthZ 
+ 
+
+Welcome back to this lesson on authentication and authorization. Before we get into more specific details, let's look at what is a principal. A principal is an IAM entity that is allowed to interact with OCI resources. There are two kinds of principals primarily in OCI. One is your users. Think about people who are logging on to your console or using your CLI or SDKs users, human beings actually using your cloud resources. And then the resources themselves can be principals.
+
+So a good example of a resource principal is an instance principal, which is actually an instance which becomes a principal, which means that it can make API calls against other OCI services like storage. Also when we talk about principals, we have groups.
+
+And groups are basically collection of users who have the same type of access requirements to resources. So you can have a storage, admin group where you could group all the human beings who are storage administrators and so on and so forth.
+
+So let's look at some of the details starting with authentication. Authentication is sometimes also referred to as AuthN. As we recap from the previous lesson, authentication is basically figuring out, are you who you say you are? And the easiest way to understand this is all of us deal with this on an everyday basis. When you go to a website and you provide your username and password to access some of the content, you are being authenticated.
+
+There are other ways to do authentication. The one common for cloud is API signing keys. So when you are making API calls, whether you're using the SDK or the CLI, you would use the API signing keys which use a public private key pair to sign these APIs calls and authenticate these API calls.
+
+It uses an RSA key pair, as you can see here, with both a public key and a private key. There is also a third way to do authentication and that's based on authentication tokens. And these are Oracle-generated token strings. And the idea here is you can authenticate third-party APIs, which don't support OCI authentication model.
+
+So in this example, we are showing an ADW, calling an ADW, Autonomous Data Warehouse API call where we are using these auth tokens. Still your identity is being followed. These auth tokens can be used for this purpose.
+
+Now let's very quickly look at authorization. So authorization deals with permissions and figuring out what permissions do you have. In OCI, authorization is done through what we call as IAM policies. And policies, think about these as human readable statements to define granular permissions. So you have a couple of examples here. And the policy syntax is always something similar.
+
+In the next slide, I'll talk a little bit more about what this statement means. Remember, policies can be attached to a compartment, or they could be attached to a tenancy. If they're attached to a tenancy, it applies to everything within that tenancy. If it's applied to a compartment, it applies to only the resources within that compartment.
+
+So how is AuthZ done in OCI? We talked about policies. What does the syntax look like? As you can see here, the syntax is always-- always you have to start with an allow. Everything is denied by default. So you don't really have to write a deny statement. So you say Allow group_name.
+
+A group is basically a collection of users. So you cannot try to policy on individual users. You always operate at a group level. To do something, there is a verb. On some resources, there's a resource type. And there's a location. Location can be a tenancy. Location can be a compartment. And you can make these policies really complex with adding conditions. And again, foundations course. So we are not getting into a lot of these complex topic. But you could really write complex policies.
+
+So just to give you an idea of what the verbs might look like, there are four levels of verb. There is a manage. There is a use. There's a read. And there's a inspect. So manage basically means you can manage all resources. Use basically means you can read. But you could not do things like update and delete and so on and so forth. And you can read more on the documentation.
+
+Resource type basically can be all resources, meaning everything in your account, or it could be compute resources, database resources, whatnot, all the resources you have. Now, you could operate at a family level, which is meaning all the entities within that resource family, or you could even go very granular. So you could say that in compute, I just want somebody to operate on the instances but not work on the instance images.
+
+So you could actually do that. So this is how you would write a policy. There are some exceptions to this rule. There are policies you would write for services and such. But again, it's a foundation score, so we're not getting into those advanced details. This is typically how you would do a transition in OCI. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/c526292c-6c3f-4111-a7ea-273f629d2157)
+![image](https://github.com/qriz1452/oci/assets/112246222/4904b79e-2225-4220-a37f-7e36d09f4dba)
+![image](https://github.com/qriz1452/oci/assets/112246222/116f800a-d131-4eaa-be40-a6598f9212ee)
+![image](https://github.com/qriz1452/oci/assets/112246222/2d0c6d3e-bf3d-471b-8835-e3217721ae7e)
+![image](https://github.com/qriz1452/oci/assets/112246222/51882c33-0682-41de-8600-d61e18033a01)
+
+
+-------------
+ Now Playing : Tenancy Setup 
+
+ 
+Welcome back. In this particular lesson, let's quickly look at how you can set up your tenancy or your account. Well, so until now, we saw that there is a tenancy administrator. This is the person who creates an account and is kind of responsible for day to day operations of this account.
+
+But a best practice is to not have tenancy administrator do kind of day to day operations, but rather have somebody who is an admin for your particular account. And this can be a set of users, not just one person. And you can group all of them under this, like a group such as OCI admin here. And then you write policies for this particular group, and let them operate on their own specific compartments.
+
+So let me talk about some of these things which are shown in the graphic here. So the first thing here, kind of a best practice is what I just said, don't use the tenancy administrator account for day to day operations. You should not be doing that.
+
+The second best practice is to create dedicated compartments to isolate resources as is shown here. So there's a sandbox compartment. It could be a compartment for a production, or development, or a business unit, or it could be a region based compartment, or whichever way you want to isolate your resources.
+
+These compartments are available across all regions. So when I say region based, meaning you could say North America uses this compartment, and Europe uses this compartment, et cetera. So you could isolate your resources in kind of a geographically based on where your users are. But you should have individual compartments. You should not put everything under the root compartment.
+
+And then the third best practice is to enforce the use of multi-factor authentication. And the idea with multi-factor authentication, it's a method for authentication that requires the use of more than one factor to verify a user's identity. So it would be something like a password, something you know, and a device, something you have.
+
+So these are the three best practices you should definitely enforce as you set up your tenancy. So what are the policies you need to write if you have a setup like this where there's a tenancy administrator, but you are not using this account for day to day operations?
+
+So what are some of the policies you need to give to these OCI administrators, so, in fact, they could be a proxy for the tenancy admin, and you could swap out the tenancy admin with the OCI admin?
+
+There are some policies which you absolutely need to provide. So the first thing is you should provide access to manage all resources. I'm showing these policies in tenancy here, but you could scope them to a compartment as well. So you could say compartment ABC. You could have that name here. But you should provide access for the OCI admins to manage all resources, like a tenancy admin would do.
+
+And then there are resource types for the IM service itself, which you need to use in policies so that the admins which are available in the OCI admin groups can use OCI Identity resource types. So for example, in IM, you don't have any aggregate resource type. So you have to use them individually.
+
+So there is a resource type called domains. There's a resource type called users, groups, dynamic groups, policies, compartments. And there are some more identity providers, network sources, tag, defaults, tag namespaces, et cetera. I'm not listing to a whole set of resource types here.
+
+But you have to write these policies, otherwise, OCI admins cannot create users. They cannot create groups. They cannot create policies. So if you have to give them access to manage policies, being able to create users, groups, et cetera, you should actually write these policies.
+
+So this is the least amount of policies you need to write for the OCI admins in order for them to be kind of day to day admins for your tenancy. So hopefully, this is a quick lesson on how you can set up your tenancy following these best practices. I hope you found this lesson useful. Thanks for your time. 
+
+![image](https://github.com/qriz1452/oci/assets/112246222/c879a2aa-8c14-4026-a17c-7cb908f45467)
+
+--------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
