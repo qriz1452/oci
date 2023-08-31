@@ -36,9 +36,9 @@ Whether you are starting with Oracle Cloud Infrastructure or migrating your enti
  Now Playing : OCI Architecture 
 
  
-Welcome to this lesson on OCI architecture. In this lesson, we will cover the core constructs of OCI's physical architecture, starting with regions. Region is a localized geographic area comprising of one or more availability domains. Availability domains are one or more fault-tolerant data centers located within a region but connected to each other by a low latency, high bandwidth network.
+Welcome to this lesson on OCI architecture. In this lesson, we will cover the core constructs of OCI's physical architecture, starting with regions. **Region is a localized geographic area comprising of one or more availability domains. Availability domains are one or more fault-tolerant data centers located within a region but connected to each other by a low latency, high bandwidth network**
 
-Fault domains is a grouping of hardware and infrastructure within an availability domain to provide antiaffinity. So think about these as logical data centers. We looked at it in the previous lesson. Today, OCI has a massive geographic footprint around the world with multiple regions across the world. And we also have a multicloud partnership with Microsoft Azure. And we have a differentiated hybrid cloud offering called Dedicated Region Cloud@Customer.
+**Fault domains is a grouping of hardware and infrastructure within an availability domain to provide antiaffinity.** So think about these as logical data centers. We looked at it in the previous lesson. Today, OCI has a massive geographic footprint around the world with multiple regions across the world. And we also have a multicloud partnership with Microsoft Azure. And we have a differentiated hybrid cloud offering called Dedicated Region Cloud@Customer.
 
 But before we dive into the physical architecture, let us look at how do you choose a region. First thing is choosing a region, you choose a region closest to your users for lowest latency and highest performance. So that's a key criteria.
 
@@ -56,7 +56,7 @@ So the idea is, you put the resources in different fault domains. And they don't
 
 We also leverage fault domains for our own services. So in any region, resources in that most one fault domain are being actively changed at any point in time. This means that availability problems caused by change procedures are isolated at the fault domain level. And moreover, you can control the placement of your computer database instances to far domain at instance launch time. So you can specify which fault domain you want to use.
 
-So what is the general guidance? The general guidance is we have these constructs, like fault domains and availability domains, to help you avoid single points of failure. We do that on our own. So we make sure that the servers, the top-of-rack switch, all are redundant. So you don't have hardware failures. So we try to minimize those hardware failures as much as possible.
+So what is the general guidance? The general guidance is we have these constructs, like **fault domains and availability domains, to help you avoid single points of failure.** We do that on our own. So we make sure that the servers, the top-of-rack switch, all are redundant. So you don't have hardware failures. So we try to minimize those hardware failures as much as possible.
 
 You need to do the same when you are designing your own architecture. So let's look at an example. You have a region. You have an availability domain. And as we said, one AD has three fault domains. So you see those fault domains here.
 
@@ -68,7 +68,7 @@ Now, to take it to the next step, you could replicate the same design in another
 
 And so you could use various technologies, like Oracle Data Guard, to make sure that your primary and standby the data is kept in sync here. And so you can design your application your architectures like these to avoid single points of failure. Even for regions where we have a single availability domain, you could still leverage fault domain construct to achieve higher visibility and avoid single points of failure.
 
-Let's summarize what we learned in this lesson. So we looked at region. Region comprises of availability domains. Availability domains comprise of fault domains. So let's look at the inside-out view. So first let's start with fault domain. Fault domain provide protection against failure within an availability domain. Availability domain themselves provide protection from entire availability domain failures, particularly in a multi-AD region.
+Let's summarize what we learned in this lesson. So we looked at region. **Region comprises of availability domains. Availability domains comprise of fault domains**. So let's look at the inside-out view. So first let's start with fault domain. Fault domain provide protection against failure within an availability domain. Availability domain themselves provide protection from entire availability domain failures, particularly in a multi-AD region.
 
 And then you have this concept of region pair where in every country we operate on, most of the countries we operate, we have at least two data centers. So you could use the second data center for disaster recovery or backup, or it also helps you with to comply with data residency and compliance requirements. And then not only this, we also have SLAs on availability, management, and performance. 
 
