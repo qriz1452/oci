@@ -1,7 +1,6 @@
  Now Playing : OCI Overview 
 
- Some of the world's largest enterprises are running their mission critical workloads on Oracle's next-generation cloud platform called Oracle Cloud Infrastructure. And today, I am really excited to tell you more about it. In this lesson, you will see a general overview of what you can do in OCI. Let's get started.
-
+ 
 To keep things simple, let us break them down into seven major categories. Core infrastructure, database services data and AI, analytics, governance and administration, developer services, and application services. But first, the foundation of any cloud platform is the global footprint of regions. We have many generally available regions in the world, along with multicloud support with Microsoft Azure and a differentiated hybrid offering called Dedicated Region Cloud@Customer.
 
 We have building blocks on top of this global footprint-- the seven categories we just mentioned. At the very bottom, we have the core primitives, compute, storage, and networking. Compute services cover virtual machines, bare metal servers, containers, a managed Kubernetes service, and a managed VMware service.
@@ -12,13 +11,13 @@ Networking features let you set up software-defined private networks in Oracle C
 
 We are the only cloud that runs autonomous databases and multiple flavors of it, including OLTP, OLAP, and JSON. And then you can run databases in virtual machines, bare metal servers, or even Exadata in the cloud. You can also run open source databases such as MySQL and NoSQL in the Oracle Cloud Infrastructure.
 
-Data and AI services. We have a managed Apache Spark service called data flow, a managed service for tracking data artifacts across OCI called data catalog, and a managed service for data ingestion and ETL called data integration. We also have a managed data science platform for machine learning models and training. We also have a managed Apache Kafka service for event streaming use cases.
+Data and AI services. **We have a managed Apache Spark service called data flow**, a **managed service for tracking data artifacts across OCI called data catalog** and a **managed service for data ingestion and ETL called data integration**. We also have a managed data science platform for machine learning models and training. We also have a managed Apache Kafka service for event streaming use cases.
 
-Then we have governance and administration services. These services include security, identity, and observability and management. We have unique features like compartments that make it operationally easier to manage large and complex environments.
+Then we have governance and administration services. These services include security, identity, and observability and management. We have unique features like **compartments that make it operationally easier to manage large and complex environments.**
 
 Security is integrated into every aspect of OCI, whether it's automatic detection or remediation, what we typically refer to as cloud security posture management, robust network protection, or encryption by default. We have an integrated observability and management platform with features like logging, logging analytics, and application performance management, and much more.
 
-Then we have a bunch of developer services. We have a managed local service called APEX, several other developer services, and a managed Terraform service called resource manager. For analytics, we have a managed analytics service called Oracle Analytics Cloud that integrates with various third-party solutions.
+Then we have a bunch of developer services. We have a managed local service called APEX, several other developer services, and a **managed Terraform service called resource manager.** For analytics, we have a **managed analytics service called Oracle Analytics Cloud** that integrates with various third-party solutions.
 
 Under application services, we have a managed serverless offering called functions, and API Gateway, and an event service to help you create microservices and event-driven architectures. We have a comprehensive connected SaaS suite across your entire business, finance, human resources, supply chain, manufacturing, advertising, sales, customer service, and marketing, all running on OCI.
 
